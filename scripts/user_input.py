@@ -1,9 +1,7 @@
 import json
 import os
-
 from scripts.ansi import *
 from config import DEFAULT_ROCKETS_PATH, CUSTOM_ROCKETS_PATH
-
 from dataclasses import dataclass
 from typing import List
 
@@ -181,7 +179,7 @@ def manualEntry():
       dryMassAdj=dryMassAdj,
       wetMassAdj=wetMassAdj,
       fuel_reserve=fuel_reserve,
-      man_stage_addition=manStage,
+      manual_stage_addition=manStage,
       rocketName=name,
       rocketMass=rocketMass
   )

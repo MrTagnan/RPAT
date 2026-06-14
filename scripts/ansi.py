@@ -1,22 +1,37 @@
-# ANSI lambda colo(u)r magic
-def color(code, text):
+import os
+import sys
+
+#ANSI lambda colo(u)r magic
+def supports_ansi() -> bool:
+    if os.getenv("NO_COLOR") is not None:
+        return False
+
+    if not sys.stdout.isatty():
+        return False
+
+    if os.name == "nt":
+        return (
+            os.getenv("WT_SESSION") is not None or
+            os.getenv("TERM_PROGRAM") == "vscode"
+        )
+
+    return os.getenv("TERM", "") not in ("", "dumb")
+
+USE_COLOUR = supports_ansi()
+
+
+
+
+def colour(code: str, text: str) -> str:
+    if not USE_COLOUR:
+        return text
     return f"\033[{code}m{text}\033[0m"
 
-GREEN   = lambda t: color("1;32", t)
-BLUE    = lambda t: color("1;34", t)
-YELLOW  = lambda t: color("1;33", t)
-CYAN    = lambda t: color("1;36", t)
-RED     = lambda t: color("1;31", t)
-MAGENTA = lambda t: color("1;35", t)
-GRAY    = lambda t: color("0;37", t)
-D_GRAY   = lambda t: color("0;90", t)
-
-# colo(u)r inhibitors, you can keep those commented out or actually use them if you care about consistency.
-
-# primary
-#def T1(text):
-#    return YELLOW(text)
-
-# secondary
-#def T2(text):
-#    return BLUE(text)
+GREEN   = lambda t: colour("1;32", t)
+BLUE    = lambda t: colour("1;34", t)
+YELLOW  = lambda t: colour("1;33", t)
+CYAN    = lambda t: colour("1;36", t)
+RED     = lambda t: colour("1;31", t)
+MAGENTA = lambda t: colour("1;35", t)
+GRAY    = lambda t: colour("0;37", t)
+D_GRAY  = lambda t: colour("0;90", t)
