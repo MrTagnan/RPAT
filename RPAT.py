@@ -10,50 +10,41 @@
 import json
 import os
 import time
-from scripts.user_input import rocket
-from scripts.ansi import *
-from scripts.payload import trajectories
-from scripts.graphing import graph
-from config import DEBUG_MODE, GRAPH, TRAJECTORY_TARGETS_PATH
 
+from scripts.ansi import *
+from config import DEBUG_MODE, GRAPH, TRAJECTORY_TARGETS_PATH
 
 print(D_GRAY("----------------------------------------"))
 print(GRAY("Rocket Performance Analysis Tool (RPAT)"))
 print(GRAY("         Created by TotallyAm"))
 print(D_GRAY("----------------------------------------"))
 
+from scripts.graphing import graph
+from scripts.payload import trajectories
+from scripts.user_input import rocket
 
-#loads the trajectory targets
-def loadTargets():
-  path = os.path.join(os.path.dirname(__file__), TRAJECTORY_TARGETS_PATH)
-  with open(path, "r") as f:
-    return json.load(f)
+def load_targets():
+    path = os.path.join(os.path.dirname(__file__), TRAJECTORY_TARGETS_PATH)
 
-#error checking
+    with open(path, "r") as file:
+        return json.load(file)
+
+
 try:
-  trajectory_targets = loadTargets()
-except Exception as e:
-    print("[Error] Failed to load trajectory_targets.json:", e)
-    trajectory_targets = {} 
+    trajectory_targets = load_targets()
+except Exception as error:
+    print("[Error] Failed to load trajectory_targets.json:", error)
+    trajectory_targets = {}
 
 
-print(GRAY(f"\nEvaluating {rocket.rocketName}....."))
+print(GRAY(f"\nEvaluating {rocket.rocket_name}....."))
 
-startTime = time.perf_counter()
+start_time = time.perf_counter()
 
-
-leoPayload = trajectories(rocket, trajectory_targets)
+leo_payload = trajectories(rocket, trajectory_targets)
 
 if DEBUG_MODE and not GRAPH:
-    deltaTime = time.perf_counter() - startTime
-    print(f"\nThis program took {(deltaTime * 1000):.0f} ms to complete.")
+    delta_time = time.perf_counter() - start_time
+    print(f"\nThis program took {(delta_time * 1000):.0f} ms to complete.")
 elif GRAPH:
-  graph(rocket, leoPayload)
-
-
-
-
-
-
-  
-  
+    graph(rocket, leo_payload)

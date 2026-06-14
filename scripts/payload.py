@@ -1,161 +1,170 @@
+from collections import namedtuple
+
 import numpy as np
+
+import config
 from scripts.ansi import *
 from scripts.user_input import rocket
-from config import DEBUG_MODE, coarseFactor, fineFactor, graphFactor
-  
 
 
+DEBUG_MODE = config.DEBUG_MODE
+coarse_factor = getattr(config, "coarse_factor", None)
+if coarse_factor is None:
+    coarse_factor = config.coarseFactor
+
+fine_factor = getattr(config, "fine_factor", None)
+if fine_factor is None:
+    fine_factor = config.fineFactor
 
 
-#finds the dV from mass ratio
-def rocketEquation(wetMass, dryMass, isp):
-  #by weight, dV = (isp * g0) * ln(wet mass/dry mass)
-  g0 = 9.80665 #m/s^2
-  eV = isp * g0
-  massRatio = wetMass/dryMass
-  deltaV = eV * np.emath.log(massRatio)
-  return deltaV
+def rocket_equation(wet_mass, dry_mass, isp):
+    # By weight, dV = (isp * g0) * ln(wet mass / dry mass).
+    g0 = 9.80665  # m/s^2
+    exhaust_velocity = isp * g0
+    mass_ratio = wet_mass / dry_mass
+    delta_v = exhaust_velocity * np.emath.log(mass_ratio)
 
-#calculates the dV of each stage + payload
-def calculateTotalDv(rocket, payloadMass, breakdown=False, raw=False):
-  totalDv = 0
-  upperMass = payloadMass
-  stageDv = []
-
-  if raw:
-    wetMass = rocket.wetMass
-    dryMass = rocket.dryMass
-  else:
-    wetMass = rocket.wetMassAdj
-    dryMass = rocket.dryMassAdj
-  
-  for i in reversed(range(rocket.stages)):
-    m0 = wetMass[i] + upperMass
-    m1 = dryMass[i] + upperMass
-    dv = rocketEquation(m0, m1, rocket.isp[i])
-    stageDv.append(dv)
-    totalDv += dv
-    if rocket.man_stage_addition == False:
-      upperMass = m0
-    
-  if breakdown:
-    return totalDv, stageDv
-  else: return totalDv
-
-## loops calcaulateTotalDv to find the maximum payload mass for the given target dv
-def payloadFinder(lowBound, highBound, stepSize, targetDv, rocket):
-  from collections import namedtuple
-  PayloadResult = namedtuple("PayloadResult", ["iterations", "payload", "dv"])
-    
-  iterations     = 0
-  bestPayload    = lowBound
-  bestDv         = calculateTotalDv(rocket, lowBound)
-  if(bestDv < targetDv):
-    if(DEBUG_MODE):
-      print("No result possible.")
-    return PayloadResult(iterations, bestPayload, bestDv)
-        
-  p = lowBound 
-  
-  while p <= highBound:
-   dv = calculateTotalDv(rocket, p)
-   
-   if dv >= targetDv:
-     bestPayload = p
-     bestDv  = dv
-   else:
-     break
-   
-   p += stepSize
-   iterations += 1
-  
-  return PayloadResult(iterations, bestPayload, bestDv)
+    return delta_v
 
 
-## creates an array for a payload graph
-def payloadCurveGenerator(rocket, step, maxPayload, cutoff, raw):
-  payloads   = [] #x axis
-  dvs        = [] #y axis
-  p          = 0.0
-  iterations = 0
+def calculate_total_dv(rocket, payload_mass, breakdown=False, raw=False):
+    total_dv = 0
+    upper_mass = payload_mass
+    stage_dv = []
 
-  
+    if raw:
+        wet_mass = rocket.wet_mass
+        dry_mass = rocket.dry_mass
+    else:
+        wet_mass = rocket.wet_mass_adj
+        dry_mass = rocket.dry_mass_adj
 
-  while p <= maxPayload:
-    dv = calculateTotalDv(rocket, p, False, raw)
-    payloads.append(p)
-    dvs.append(dv)
-    if dv <= cutoff:
-      break
-    p += step
-    iterations += 1
-  
-  return payloads, dvs, iterations
+    for i in reversed(range(rocket.stages)):
+        m0 = wet_mass[i] + upper_mass
+        m1 = dry_mass[i] + upper_mass
+        dv = rocket_equation(m0, m1, rocket.isp[i])
+
+        stage_dv.append(dv)
+        total_dv += dv
+
+        if not rocket.man_stage_addition:
+            upper_mass = m0
+
+    if breakdown:
+        return total_dv, stage_dv
+
+    return total_dv
+
+
+def payload_finder(low_bound, high_bound, step_size, target_dv, rocket):
+    PayloadResult = namedtuple("PayloadResult", ["iterations", "payload", "dv"])
+
+    iterations = 0
+    best_payload = low_bound
+    best_dv = calculate_total_dv(rocket, low_bound)
+
+    if best_dv < target_dv:
+        if DEBUG_MODE:
+            print("No result possible.")
+        return PayloadResult(iterations, best_payload, best_dv)
+
+    payload = low_bound
+
+    while payload <= high_bound:
+        dv = calculate_total_dv(rocket, payload)
+
+        if dv >= target_dv:
+            best_payload = payload
+            best_dv = dv
+        else:
+            break
+
+        payload += step_size
+        iterations += 1
+
+    return PayloadResult(iterations, best_payload, best_dv)
+
+
+def payload_curve_generator(rocket, step, max_payload, cutoff, raw):
+    payloads = []
+    dvs = []
+    payload = 0.0
+    iterations = 0
+
+    while payload <= max_payload:
+        dv = calculate_total_dv(rocket, payload, False, raw)
+        payloads.append(payload)
+        dvs.append(dv)
+
+        if dv <= cutoff:
+            break
+
+        payload += step
+        iterations += 1
+
+    return payloads, dvs, iterations
+
 
 def trajectories(rocket, trajectory_targets):
-  results = {}
+    results = {}
 
-  
+    for name, target_dv in trajectory_targets.items():
+        coarse_step = (rocket.rocket_mass / 1000) * coarse_factor  # kg
+        fine_step = coarse_step / fine_factor
 
-  for name, tgtDv in trajectory_targets.items():
-  
+        coarse = payload_finder(
+            low_bound=0,
+            high_bound=(0.3 * rocket.rocket_mass),
+            step_size=coarse_step,
+            target_dv=target_dv,
+            rocket=rocket,
+        )
 
-    coarseStep  = (rocket.rocketMass / 1000 ) * coarseFactor #kg
-    fineStep    = coarseStep / fineFactor
+        fine_low = max(0, coarse.payload - coarse_step)
+        fine_high = coarse.payload + coarse_step
 
-    #coarse pass
-    coarse = payloadFinder(
-      lowBound=0,
-      highBound=(0.3 * rocket.rocketMass),
-      stepSize=coarseStep,
-      targetDv=tgtDv,
-      rocket=rocket
-      )
-    
-    # Set up fine bounds
-    fineLow  = max(0, coarse.payload - coarseStep)
-    fineHigh = coarse.payload + coarseStep
-    if DEBUG_MODE:
-      print("----------------------------------------")
-      print(name)
-      print("\nCoarse")
-      print(coarse)
-      
-    
+        if DEBUG_MODE:
+            print("----------------------------------------")
+            print(name)
+            print("\nCoarse")
+            print(coarse)
 
-    # Fine pass
-    fine = payloadFinder(
-      lowBound=fineLow,
-      highBound=fineHigh,
-      stepSize=fineStep,
-      targetDv=tgtDv,
-      rocket=rocket
-      )
-    if DEBUG_MODE:
-      print("\nFine")
-      print(fine)
-      print("----------------------------------------")
+        fine = payload_finder(
+            low_bound=fine_low,
+            high_bound=fine_high,
+            step_size=fine_step,
+            target_dv=target_dv,
+            rocket=rocket,
+        )
 
-    
-    results[name] = {
-      "maxPayload"   : fine.payload,
-      "dv"        : fine.dv,
-      "iterations": fine.iterations,
-      "target"    : tgtDv,
-  }
+        if DEBUG_MODE:
+            print("\nFine")
+            print(fine)
+            print("----------------------------------------")
 
+        results[name] = {
+            "max_payload": fine.payload,
+            "dv": fine.dv,
+            "iterations": fine.iterations,
+            "target": target_dv,
+        }
 
-  print(YELLOW("\n=== Payload Capacity by Target Δv ==="))
+    print(YELLOW("\n=== Payload Capacity by Target Δv ==="))
 
+    for name, result in results.items():
+        print(
+            GRAY(
+                f"\n  {name:28} ->  {result['max_payload']:9,.2f} kg "
+                f"@ Δv {result['dv']:7,.2f} m/s"
+            )
+        )
 
-  for name, res in results.items():
-    print(GRAY(f"\n  {name:28} ->  {res['maxPayload']:9,.2f} kg "f"@ Δv {res['dv']:7,.2f} m/s"))
-    dv, stageDvs = calculateTotalDv(rocket, res['maxPayload'], breakdown=True)
-    stages_fmt = [f"Stage {i+1}: {dv:,.2f} m/s" for i, dv in enumerate(reversed(stageDvs))]
-    for i in range(0, len(stages_fmt), 2):
-        print(D_GRAY("     " + " | ".join(stages_fmt[i:i+2])))
+        dv, stage_dvs = calculate_total_dv(rocket, result["max_payload"], breakdown=True)
+        stages_fmt = [f"Stage {i + 1}: {dv:,.2f} m/s" for i, dv in enumerate(reversed(stage_dvs))]
 
+        for i in range(0, len(stages_fmt), 2):
+            print(D_GRAY("     " + " | ".join(stages_fmt[i:i + 2])))
 
-  leoPayload = min(results.values(), key=lambda x: x["target"])["maxPayload"]
+    leo_payload = min(results.values(), key=lambda x: x["target"])["max_payload"]
 
-  return leoPayload
+    return leo_payload
