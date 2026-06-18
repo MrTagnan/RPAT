@@ -68,7 +68,7 @@
     "wetMass" : [226400, 24170],
     "isp"     : [365, 462],
     "type"    : "Historical",
-    "desc"    : "Delta IV Medium (ULA)"
+    "desc"    : "Delta IV Medium (No SRB) (ULA)"
   },
 
   "delta-4m-star48b": {
@@ -78,7 +78,24 @@
     "wetMass" : [226400, 24170, 2137],
     "isp"     : [365, 462, 286],
     "type"    : "Hypothetical",
-    "desc"    : "Delta IV Medium + Star 48B kick stage (ULA)"
+    "desc"    : "Delta IV Medium  (No SRB)+ Star 48B kick stage (ULA)"
+  },
+
+    "atlas-v-gem63": {
+    "manStage"            : 0,
+    "stages"              : 2,
+    "dryMass"             : [21054, 2316],
+    "wetMass"             : [305143, 23146],
+    "isp"                 : [320, 450.5],
+    "booster_dry_mass"    : 5100,
+    "booster_wet_mass"    : 49300,
+    "booster_isp"         : 279,
+    "booster_count"       : 2,
+    "booster_burn_time"   : 97.6,
+    "main_stage_thrust"   : 3827,
+    "booster_thrust"      : 1663,
+    "type"                : "Active",
+    "desc"                : "Atlas V with 2 GEM 63 boosters (ULA)"
   }
 
 }

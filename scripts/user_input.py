@@ -15,7 +15,6 @@ class Rocket:
     dry_mass: List[float]
     wet_mass: List[float]
     dry_mass_adj: List[float]
-    wet_mass_adj: List[float]
     fuel_reserve: List[float]
     man_stage_addition: bool
     rocket_name: str
@@ -57,7 +56,6 @@ def load_rockets():
 
 def add_reserves(stages, fuel_reserve, dry_mass, wet_mass):
     dry_mass_adj = []
-    wet_mass_adj = []
 
     for i in range(stages):
         reserve = fuel_reserve[i]
@@ -69,12 +67,52 @@ def add_reserves(stages, fuel_reserve, dry_mass, wet_mass):
 
         if reserve > 0:
             dry_mass_adj.append(dry_mass[i] + reserve)
-            wet_mass_adj.append(wet_mass[i] - reserve)
         else:
             dry_mass_adj.append(dry_mass[i])
-            wet_mass_adj.append(wet_mass[i])
 
-    return dry_mass_adj, wet_mass_adj
+    return dry_mass_adj
+
+def booster_stage_calc(booster_dry_mass, booster_wet_mass, booster_count, booster_thrust, 
+                       booster_isp, main_stage_thrust, main_stage_isp, rocket_mass, booster_burn_time):
+    
+    booster_dry_sum = booster_dry_mass * booster_count
+    booster_wet_sum = booster_wet_mass * booster_count
+    booster_thrust_sum = booster_thrust * booster_count
+
+    #average the ISP weighted by the thrust of each component to get the effective ISP of the combined system
+    effective_isp = (booster_thrust_sum + main_stage_thrust) / ((main_stage_thrust / main_stage_isp) + (booster_thrust_sum / booster_isp))
+
+    booster_prop = booster_wet_sum - booster_dry_sum
+    initial_mass = booster_wet_sum + rocket_mass
+    
+    g0 = 9.80665 #m/s^2
+    core_mass_flow = (main_stage_thrust * 1000) / (main_stage_isp * g0) #json data is in kN, so multiply by 1000 to get N
+    core_mass_used = core_mass_flow * booster_burn_time  
+   
+    burnout_mass = initial_mass - booster_prop - core_mass_used #mass before jettison, effective stage 1 dry mass
+    post_jettison_mass = burnout_mass - booster_dry_sum #mass after dropping boosters and using up core prop, effective stage 1 wet mass
+
+    return effective_isp, initial_mass, burnout_mass, post_jettison_mass
+
+def apply_booster_stage(
+    stages, isp, dry_mass_adj, dry_mass, wet_mass, fuel_reserve, rocket_mass,
+    booster_dry_mass, booster_wet_mass, booster_count, booster_thrust,
+    booster_isp, booster_burn_time, main_stage_thrust,
+):
+    effective_isp, initial_mass, burnout_mass, post_jettison_mass = booster_stage_calc(
+        booster_dry_mass, booster_wet_mass, booster_count,
+        booster_thrust, booster_isp, main_stage_thrust,
+        isp[0], rocket_mass, booster_burn_time,
+    )
+
+    return {
+        "stages": stages + 1,
+        "isp": [effective_isp, *isp],
+        "dry_mass": [burnout_mass, *dry_mass],
+        "dry_mass_adj": [burnout_mass, *dry_mass_adj],
+        "wet_mass": [initial_mass, post_jettison_mass, *wet_mass[1:]],
+        "fuel_reserve": [0, *fuel_reserve],
+    }
 
 
 def select_default():
@@ -101,27 +139,72 @@ def select_default():
         return None
 
     rocket_data = rockets[key]
-    fuel_reserve = rocket_data.get("fuel_reserve", [0] * rocket_data["stages"])
+    
+    stages = rocket_data["stages"]
+    isp = rocket_data["isp"]
+    fuel_reserve = rocket_data.get("fuel_reserve", [0] * stages)
 
-    dry_mass_adj, wet_mass_adj = add_reserves(
-        rocket_data["stages"],
-        fuel_reserve,
-        rocket_data["dryMass"],
-        rocket_data["wetMass"],
-    )
 
-    rocket_mass = total_mass(rocket_data["manStage"], wet_mass_adj)
+    
+    dry_mass = rocket_data["dryMass"]
+    wet_mass = rocket_data["wetMass"]
+    
+    dry_mass_adj = add_reserves( rocket_data["stages"], fuel_reserve, dry_mass, wet_mass, )
+    
+    rocket_mass = total_mass(rocket_data["manStage"], wet_mass)
+    
+    booster_count = rocket_data.get("booster_count", 0)
+    if booster_count > 0:
+        required_booster_fields = [
+            "booster_dry_mass",
+            "booster_wet_mass",
+            "booster_isp",
+            "booster_burn_time",
+            "main_stage_thrust",
+            "booster_thrust",
+        ]
+
+        missing_fields = [
+            field for field in required_booster_fields
+            if field not in rocket_data
+        ]
+
+        if missing_fields:
+            print(RED(f"Invalid booster data. Missing: {', '.join(missing_fields)}"))
+            return None
+
+        booster_result = apply_booster_stage(
+            stages, isp, dry_mass_adj, dry_mass, 
+            wet_mass, fuel_reserve, rocket_mass,
+            rocket_data["booster_dry_mass"],
+            rocket_data["booster_wet_mass"],
+            booster_count,
+            rocket_data["booster_thrust"],
+            rocket_data["booster_isp"],
+            rocket_data["booster_burn_time"],
+            rocket_data["main_stage_thrust"],
+        )
+
+        stages = booster_result["stages"]
+        isp = booster_result["isp"]
+        dry_mass = booster_result["dry_mass"]
+        dry_mass_adj = booster_result["dry_mass_adj"]
+        wet_mass = booster_result["wet_mass"]
+        fuel_reserve = booster_result["fuel_reserve"]
+        rocket_mass = wet_mass[0]
+
+    
+
 
     print(f"{GREEN('Selected rocket:')} {GRAY(rocket_data['desc'])}")
 
     return Rocket(
         name=key,
-        stages=rocket_data["stages"],
-        isp=rocket_data["isp"],
-        dry_mass=rocket_data["dryMass"],
-        wet_mass=rocket_data["wetMass"],
+        stages=stages,
+        isp=isp,
+        dry_mass=dry_mass,
+        wet_mass=wet_mass,
         dry_mass_adj=dry_mass_adj,
-        wet_mass_adj=wet_mass_adj,
         fuel_reserve=fuel_reserve,
         man_stage_addition=rocket_data["manStage"],
         rocket_name=rocket_data["desc"],
@@ -167,8 +250,8 @@ def manual_entry():
         isp.append(isps)
 
     fuel_reserve = [0] * stages
-    dry_mass_adj, wet_mass_adj = add_reserves(stages, fuel_reserve, dry_mass, wet_mass)
-    rocket_mass = total_mass(man_stage_addition, wet_mass_adj)
+    dry_mass_adj, wet_mass = add_reserves(stages, fuel_reserve, dry_mass, wet_mass)
+    rocket_mass = total_mass(man_stage_addition, wet_mass)
 
     return Rocket(
         name=name,
@@ -177,7 +260,6 @@ def manual_entry():
         dry_mass=dry_mass,
         wet_mass=wet_mass,
         dry_mass_adj=dry_mass_adj,
-        wet_mass_adj=wet_mass_adj,
         fuel_reserve=fuel_reserve,
         man_stage_addition=man_stage_addition,
         rocket_name=name,

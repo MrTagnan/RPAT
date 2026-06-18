@@ -36,7 +36,7 @@ def calculate_total_dv(rocket, payload_mass, breakdown=False, raw=False):
         wet_mass = rocket.wet_mass
         dry_mass = rocket.dry_mass
     else:
-        wet_mass = rocket.wet_mass_adj
+        wet_mass = rocket.wet_mass
         dry_mass = rocket.dry_mass_adj
 
     for i in reversed(range(rocket.stages)):
