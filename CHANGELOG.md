@@ -1,3 +1,33 @@
+## V0.95 - Solid Progress
+
+
+
+#### Added:
+
+* Support for basic SRBs
+* Many additional default rockets with SRBs
+* ANSI colour support in the terminal, to make it more readable
+
+
+
+#### Changed:
+
+* Completely changed the architecture of the application
+* Manual rocket data entry is disabled, it may come back, or may not
+* JSON fields have been changed slightly, manStage is now man\_stage\_add, because it is clearer in purpose but most importantly, it actually follows snake\_case convention which was annoying me, a lot. This change is backwards compatible, manStage still works.
+* Manual stage addition is no longer carried throughout the program, it is checked at the start of the program and if true, it converts it to separate stages. This will save me a lot of headaches long term.
+* Codebase was refactored to consistently follow pep8.
+
+
+
+
+
+#### Fixed:
+
+* Fuel reserve system was wrong, it was doubly penalising the payload capacity, effectively making the reserve double what was intended.
+
+## 
+
 ## V0.85 - Bingo Fuel
 
 #### Added:
@@ -7,9 +37,9 @@
 * RPAT now uses the mass adjusted for reserves to calculate payload capacity.
 * Added a new curve to the graph for recoverable rockets, showing delta V penalty of recovery. This is detected
 
-&nbsp;  automatically based upon the fuel reserves
+   automatically based upon the fuel reserves
 
-* Dark mode! It can be toggled at the top of RPAT.py via DARK\_MODE = 
+* Dark mode! It can be toggled at the top of RPAT.py via DARK\_MODE =
 
 #### 
 
@@ -28,7 +58,7 @@
 
 Although fuel\_reserves has been added as a variable to a default rocket (falcon 9), it does not need to be added for RPAT to work,
 
-if you do not include this variable, it is generated as an empty array and will not impact the calculations or graphs. Overall, 
+if you do not include this variable, it is generated as an empty array and will not impact the calculations or graphs. Overall,
 
 this feature was designed to make RPAT compatible with propulsively recovered rockets, and to support fuel residuals. It is not
 

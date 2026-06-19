@@ -47,8 +47,7 @@ def calculate_total_dv(rocket, payload_mass, breakdown=False, raw=False):
         stage_dv.append(dv)
         total_dv += dv
 
-        if not rocket.man_stage_addition:
-            upper_mass = m0
+        upper_mass = m0
 
     if breakdown:
         return total_dv, stage_dv

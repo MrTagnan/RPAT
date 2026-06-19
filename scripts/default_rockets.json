@@ -1,101 +1,131 @@
 {
   "f9": {
-  "manStage": 0,
-  "stages"  : 2,
-  "dryMass" : [22000, 4000],
-  "wetMass" : [409000, 111500],
-  "isp"     : [311, 348],
-  "type"    : "Active",
-  "desc"    : "Falcon 9 Block 5 (Drone Ship Landing) (SpaceX)",
+  "man_stage_add": 0,
+  "stages"       : 2,
+  "dryMass"      : [22000, 4000],
+  "wetMass"      : [409000, 111500],
+  "isp"          : [311, 348],
+  "type"         : "Active",
+  "desc"         : "Falcon 9 Block 5 (Drone Ship Landing) (SpaceX)",
   "fuel_reserve" : [38700, 0]
   },
   
   "f9expended": {
-  "manStage": 0,
-  "stages"  : 2,
-  "dryMass" : [22000, 4000],
-  "wetMass" : [409000, 111500],
-  "isp"     : [311, 348],
-  "type"    : "Active",
-  "desc"    : "Falcon 9 Block 5 (Fully Expended) (SpaceX)",
+  "man_stage_add": 0,
+  "stages"       : 2,
+  "dryMass"      : [22000, 4000],
+  "wetMass"      : [409000, 111500],
+  "isp"          : [311, 348],
+  "type"         : "Active",
+  "desc"         : "Falcon 9 Block 5 (Fully Expended) (SpaceX)",
   "fuel_reserve" : [0, 0]
   },
 
   "electron": {
-    "manStage": 1,
-    "stages"  : 2,
-    "dryMass" : [3250, 250],
-    "wetMass" : [12550, 2300],
-    "isp"     : [311, 333],
-    "type"    : "Active",
-    "desc"    : "Electron (Rocket Lab)"
+    "man_stage_add": 1,
+    "stages"       : 2,
+    "dryMass"      : [3250, 250],
+    "wetMass"      : [12550, 2300],
+    "isp"          : [311, 333],
+    "type"         : "Active",
+    "desc"         : "Electron (Rocket Lab)"
   },
   
  "saturnv": {
-  "manStage": 0,
-  "stages": 3,
-  "dryMass": [137000, 43000, 15200],
-  "wetMass": [2214000, 470000, 120500],
-  "isp"    : [304, 424, 424],
-  "type"   : "Historical",
-  "desc"   : "Saturn V (NASA, various)"
+  "man_stage_add": 0,
+  "stages"       : 3,
+  "dryMass"      : [137000, 43000, 15200],
+  "wetMass"      : [2214000, 470000, 120500],
+  "isp"          : [304, 424, 424],
+  "type"         : "Historical",
+  "desc"         : "Saturn V (NASA, various)"
   },
 
   "titan2": {
-    "manStage": 0,
-    "stages"  : 2,
-    "dryMass" : [4319, 2301],
-    "wetMass" : [121200, 28400],
-    "isp"     : [273, 316],
-    "type"    : "Historical",
-    "desc"    : "Titan II (ICBM)"
+    "man_stage_add": 0,
+    "stages"       : 2,
+    "dryMass"      : [4319, 2301],
+    "wetMass"      : [121200, 28400],
+    "isp"          : [273, 316],
+    "type"         : "Historical",
+    "desc"         : "Titan II (ICBM)"
   },
 
   "n1-1969": {
-    "manStage": 0,
-    "stages"  : 5,
-    "dryMass" : [130000, 55700, 13700, 6000, 3500],
-    "wetMass" : [1880000, 560700, 188700, 61800, 18200],
-    "isp"     : [284, 346, 353, 353, 349],
-    "type"    : "Historical",
-    "desc"    : "N1 (1969 version) (CCCP, OKB-1)"
+    "man_stage_add": 0,
+    "stages"       : 5,
+    "dryMass"      : [130000, 55700, 13700, 6000, 3500],
+    "wetMass"      : [1880000, 560700, 188700, 61800, 18200],
+    "isp"          : [284, 346, 353, 353, 349],
+    "type"         : "Historical",
+    "desc"         : "N1 (1969 version) (CCCP, OKB-1)"
   },
 
   "delta-4m": {
-    "manStage": 0,
-    "stages"  : 2,
-    "dryMass" : [26760, 2850],
-    "wetMass" : [226400, 24170],
-    "isp"     : [365, 462],
-    "type"    : "Historical",
-    "desc"    : "Delta IV Medium (No SRB) (ULA)"
+    "man_stage_add": 0,
+    "stages"       : 2,
+    "dryMass"      : [26760, 2850],
+    "wetMass"      : [226400, 24170],
+    "isp"          : [365, 462],
+    "type"         : "Historical",
+    "desc"         : "Delta IV Medium (No SRB) (ULA)"
   },
 
   "delta-4m-star48b": {
-    "manStage": 0,
-    "stages"  : 3,
-    "dryMass" : [26760, 2850, 126],
-    "wetMass" : [226400, 24170, 2137],
-    "isp"     : [365, 462, 286],
-    "type"    : "Hypothetical",
-    "desc"    : "Delta IV Medium  (No SRB)+ Star 48B kick stage (ULA)"
+    "man_stage_add": 0,
+    "stages"       : 3,
+    "dryMass"      : [26760, 2850, 126],
+    "wetMass"      : [226400, 24170, 2137],
+    "isp"          : [365, 462, 286],
+    "type"         : "Hypothetical",
+    "desc"         : "Delta IV Medium (No SRB) + Star 48B kick stage (ULA)"
   },
 
-    "atlas-v-gem63": {
-    "manStage"            : 0,
+  "atlas-v-stick": {
+    "man_stage_add"        : 0,
+    "stages"              : 2,
+    "dryMass"             : [21054, 4403],
+    "wetMass"             : [305143, 25233],
+    "isp"                 : [315, 450.5],
+    "main_stage_thrust"   : 3827,
+    "type"                : "Active",
+    "desc"                : "Atlas V without boosters (ULA)"
+  },
+
+  "atlas-v-2x-aj60a": {
+    "type"                : "Active",
+    "desc"                : "Atlas V with 2 AJ-60A boosters (ULA)",
+    "man_stage_add"       : 0,
+    "stages"              : 2,
+    "dryMass"             : [21054,4403],
+    "wetMass"             : [305143, 25233],
+    "isp"                 : [320, 450.5],
+    "main_stage_thrust"   : 3827,
+    "booster_thrust"      : 1688.4,
+    "booster_dry_mass"    : 4067,
+    "booster_wet_mass"    : 46697,
+    "booster_isp"         : 279.3,
+    "booster_count"       : 2,
+    "booster_burn_time"   : 94
+       
+  },
+
+  "atlas-v-4x-aj60a": {
+    "type"                : "Active",
+    "desc"                : "Atlas V with 4 AJ-60A boosters (ULA)",
+    "man_stage_add"       : 0,
     "stages"              : 2,
     "dryMass"             : [21054, 2316],
     "wetMass"             : [305143, 23146],
     "isp"                 : [320, 450.5],
-    "booster_dry_mass"    : 5100,
-    "booster_wet_mass"    : 49300,
-    "booster_isp"         : 279,
-    "booster_count"       : 2,
-    "booster_burn_time"   : 97.6,
     "main_stage_thrust"   : 3827,
-    "booster_thrust"      : 1663,
-    "type"                : "Active",
-    "desc"                : "Atlas V with 2 GEM 63 boosters (ULA)"
+    "booster_thrust"      : 1688.4,
+    "booster_dry_mass"    : 4067,
+    "booster_wet_mass"    : 46697,
+    "booster_isp"         : 279.3,
+    "booster_count"       : 4,
+    "booster_burn_time"   : 94
+       
   }
 
 }
