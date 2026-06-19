@@ -29,7 +29,7 @@ It focuses on energy efficiency, payload margins, and practical delta-v capabili
 * **Built-in Rocket Presets** - Select from a growing library of real and fictional rockets
 * **Efficiency Scores** - Get metrics on how efficient your rocket it at a given role, for comparative use.
 * **Payload Finder** - Reports how much payload can be sent to LEO, GTO, or other delta V targets.
-* **Custom Vehicle Input** – Simple json system supported for adding your own designs
+* **Custom Vehicle Input** - Simple json system supported for adding your own designs
 
 ---
 
@@ -85,16 +85,8 @@ Simple ratio of payload mass to total launch mass. Gives a general idea of wheth
 
 ## Example Output
 
-```text
-Initial ∆v drop per kg    : -1.56 m/s/kg
+WIP 
 
-LEQ (Low-Energy Quotient) : 6.270
-HEQ (High-Energy Quotient): 5.995
-
-Payload Fraction          : 4.37 %
-```
-
-RPAT will also print payload capacities for standard targets such as LEO, GTO, TLI, etc.
 ---
 
 ## Rocket Library
@@ -134,7 +126,7 @@ You can edit `custom_rockets.json` to add your own vehicles. Each entry can cont
     "wetMass"             : [305143, 3146],
     "isp"                 : [320, 450.5],
     "fuel_reserve": [1000, 0]
-  "main_stage_thrust"   : 3827,
+   "main_stage_thrust"   : 3827,
     "booster_thrust"      : 1688.4,
     "booster_dry_mass"    : 4067,
     "booster_wet_mass"    : 46697,
