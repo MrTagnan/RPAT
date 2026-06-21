@@ -6,5 +6,6 @@
   "Mars Transfer": 13100,
   "GEO (Kourou)": 13180,
   "GEO (Florida)": 13550,
-  "Jupiter Transfer": 15700
+  "Jupiter Transfer": 15700,
+  "Zero payload"    : 1000000000
 }

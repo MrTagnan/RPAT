@@ -45,6 +45,74 @@ def load_rockets():
 
     return rockets
 
+
+def group_rockets(rockets):
+    grouped = {}
+
+    for key, rocket_data in rockets.items():
+        rocket_type = rocket_data.get("type", "Uncategorised")
+        family = rocket_data.get("family", rocket_data.get("desc", key))
+        variant = rocket_data.get("variant", rocket_data.get("desc", key))
+
+        grouped.setdefault(rocket_type, {})
+        grouped[rocket_type].setdefault(family, [])
+        grouped[rocket_type][family].append((variant, key, rocket_data))
+    
+    return grouped
+
+
+def choose_from_menu(title, options, label_func=str, skip_single=True):
+    if skip_single and len(options) == 1: #if desired, we can skip over 
+        return options[0]                 #single entries
+
+    print(YELLOW(f"\n{title}:"))
+
+    for i, option in enumerate(options):
+        print(f"{GRAY(f'{i:3}')} : {GRAY(label_func(option))}")
+
+    selected = input(f"\n{GREEN('Select number: ')}").strip()
+
+    if not selected.isdigit():
+        return None
+
+    index = int(selected)
+
+    if not 0 <= index < len(options):
+        return None
+
+    return options[index]
+
+def select_rocket_key(rockets):
+    grouped = group_rockets(rockets)
+
+    rocket_type = choose_from_menu(
+        "Rocket Types",
+        sorted(grouped.keys()),
+        skip_single=False,  # always show top level (type, in this case)
+    )
+
+    family = choose_from_menu(
+        f"{rocket_type} Families",
+        sorted(grouped[rocket_type].keys()),
+        skip_single=False, #I don't think skipping this is great either
+    )
+
+    variant = choose_from_menu(
+        f"{family} Variants",
+        grouped[rocket_type][family],
+        label_func=lambda item: item[0],
+    )
+
+    _, key, _ = variant
+    return key
+
+    
+def rocket_display_name(key, rocket_data):
+    if "family" in rocket_data and "variant" in rocket_data:
+        return f"{rocket_data['family']} - {rocket_data['variant']}"
+
+    return rocket_data.get("desc", key)
+
 def isolate_stage_masses(dry_mass, wet_mass):
     isolated_dry = []
     isolated_wet = []
@@ -150,37 +218,27 @@ def apply_booster_stage(
 
 def select_default():
     rockets = load_rockets()
-    print(YELLOW("\nAvailable Default Rockets:"))
-
-    for i, (key, rocket_data) in enumerate(rockets.items()):
-        print(f"{GRAY(f'{i:3}')} : {D_GRAY(key):2} — {GRAY(rocket_data['desc'])}")
-
-    selected = input(f"\n{GREEN('Enter the rocket name or number: ')}").lower().strip()
-
-    if selected.isdigit():
-        index = int(selected)
-
-        if 0 <= index < len(rockets):
-            key = list(rockets.keys())[index]
-        else:
-            print(RED("Invalid selection. Please try again."))
-            return None
-    elif selected in rockets:
-        key = selected
-    else:
-        print(RED("Rocket not found, please try again."))
+    key = select_rocket_key(rockets)
+    if key is None:
         return None
 
     rocket_data = rockets[key]
-    
-    stages = rocket_data["stages"]
-    isp = rocket_data["isp"]
-    fuel_reserve = rocket_data.get("fuel_reserve", [0] * stages)
+   
+    isp = rocket_data["isp"]  
 
     manual_stage_addition = rocket_data.get("manStage", rocket_data.get("man_stage_add", False))
     
-    dry_mass = rocket_data["dryMass"]
-    wet_mass = rocket_data["wetMass"]
+    dry_mass = rocket_data.get("dryMass", rocket_data.get("dry_mass", 0))
+    wet_mass = rocket_data.get("wetMass", rocket_data.get("wet_mass", 0))
+
+    if len(dry_mass) != len(wet_mass) and len(wet_mass) and len(rocket_data["isp"]):
+        print(RED("Staging mismatch detected, check your staging!"))
+    
+    stages = len(dry_mass)
+    fuel_reserve = rocket_data.get("fuel_reserve", [0] * stages)
+    
+
+        
 
     if manual_stage_addition:
         dry_mass, wet_mass = isolate_stage_masses(dry_mass, wet_mass)
@@ -191,24 +249,24 @@ def select_default():
             print(f"Adjusted dry masses: {dry_mass} kg")
             print(f"Adjusted wet masses: {wet_mass} kg\n")
 
-    dry_mass_adj = add_reserves( rocket_data["stages"], fuel_reserve, dry_mass, wet_mass, )
+    dry_mass_adj = add_reserves(stages, fuel_reserve, dry_mass, wet_mass, )
     
     rocket_mass = sum(wet_mass)  # Total wet mass of the rocket.
     
-    booster_count = rocket_data.get("booster_count", 0)
+    boosters = rocket_data.get("boosters", {})
+    booster_count = boosters.get("count", 0)
     if booster_count > 0:
         required_booster_fields = [
-            "booster_dry_mass",
-            "booster_wet_mass",
-            "booster_isp",
-            "booster_burn_time",
-            "main_stage_thrust",
-            "booster_thrust",
+            "dry_mass",
+            "wet_mass",
+            "isp",
+            "burn_time",
+            "thrust",
         ]
 
         missing_fields = [
             field for field in required_booster_fields
-            if field not in rocket_data
+            if field not in boosters
         ]
 
         if missing_fields:
@@ -216,16 +274,16 @@ def select_default():
             return None
 
         booster_result = apply_booster_stage(
-            stages, isp, dry_mass_adj, dry_mass, 
+            stages, isp, dry_mass_adj, dry_mass,
             wet_mass, fuel_reserve,
-            rocket_data["booster_dry_mass"],
-            rocket_data["booster_wet_mass"],
+            boosters["dry_mass"],
+            boosters["wet_mass"],
             booster_count,
-            rocket_data["booster_thrust"],
-            rocket_data["booster_isp"],
-            rocket_data["booster_burn_time"],
+            boosters["thrust"],
+            boosters["isp"],
+            boosters["burn_time"],
             rocket_data["main_stage_thrust"],
-        )
+)
 
         stages = booster_result["stages"]
         isp = booster_result["isp"]
@@ -233,7 +291,7 @@ def select_default():
         dry_mass_adj = booster_result["dry_mass_adj"]
         wet_mass = booster_result["wet_mass"]
         fuel_reserve = booster_result["fuel_reserve"]
-        rocket_mass = rocket_mass + rocket_data["booster_wet_mass"] * booster_count
+        rocket_mass = rocket_mass + boosters["wet_mass"] * booster_count
 
         if DEBUG_MODE:
             print(f"Updated ISPs: {[round(elem, 2) for elem in isp]}s")
@@ -242,7 +300,7 @@ def select_default():
 
 
 
-    print(f"{GREEN('Selected rocket:')} {GRAY(rocket_data['desc'])}")
+    print(f"{GREEN('Selected rocket:')} {GRAY(rocket_display_name(key, rocket_data))}")
 
     return Rocket(
         name=key,
@@ -252,76 +310,9 @@ def select_default():
         wet_mass=wet_mass,
         dry_mass_adj=dry_mass_adj,
         fuel_reserve=fuel_reserve,
-        rocket_name=rocket_data["desc"],
-        rocket_mass=rocket_mass,
-    )
-
-#very broken and very out of date, but leaving it here for now in case I want to fix it later
-def manual_entry():
-    name = input(GREEN("What is the name of your rocket? "))
-
-    try:
-        stages = int(input(GREEN("How many stages does your rocket have? ")))
-    except ValueError:
-        print("Invalid input, please try again.")
-        return None
-
-    while True:
-        response = input(
-            GREEN("Will you be including the mass of the upper stages in the lower stages? (y/n): ")
-        ).strip().lower()
-
-        if response in ("y", "yes", "true"):
-            man_stage_addition = True
-            break
-        elif response in ("n", "no", "false"):
-            man_stage_addition = False
-            break
-        else:
-            print(GREEN("Please enter 'y' or 'n'."))
-
-    dry_mass = []
-    wet_mass = []
-    isp = []
-
-    for i in range(stages):
-        print(YELLOW(f"\nStage {i + 1}:"))
-        dry = float(input(GREEN("  Dry mass (kg) : ")))
-        wet = float(input(GREEN("  Wet Mass (kg) : ")))
-        isps = float(input(GREEN("  ISP (s)       : ")))
-
-        dry_mass.append(dry)
-        wet_mass.append(wet)
-        isp.append(isps)
-
-    fuel_reserve = [0] * stages
-    dry_mass_adj, wet_mass = add_reserves(stages, fuel_reserve, dry_mass, wet_mass)
-    rocket_mass = total_mass(man_stage_addition, wet_mass)
-
-    return Rocket(
-        name=name,
-        stages=stages,
-        isp=isp,
-        dry_mass=dry_mass,
-        wet_mass=wet_mass,
-        dry_mass_adj=dry_mass_adj,
-        fuel_reserve=fuel_reserve,
-        rocket_name=name,
+        rocket_name=rocket_display_name(key, rocket_data),
         rocket_mass=rocket_mass,
     )
 
 
-def get_param():
-    while True:
-        response = input(GREEN("\nDo you want to use a preset rocket? (y/n): ")).strip().lower()
-
-        if response in ("y", "yes", "true"):
-            return select_default()
-        elif response in ("n", "no", "false"):
-            print(RED("Manual rocket entry is currently disabled. Please use a preset rocket."))
-            continue
-        else:
-            print("Please enter 'y' or 'n'.")
-
-
-rocket = get_param()
+rocket = select_default()

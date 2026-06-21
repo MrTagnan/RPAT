@@ -12,6 +12,6 @@ fine_factor   = 20   #factor for the step rate of the fine calculations (suggest
 graph_factor  = 0.4  #factor for the step rate of the graph (suggest between 0.1 and 0.5)
 
 #shared paths
-DEFAULT_ROCKETS_PATH    = "default_rockets.json"
-CUSTOM_ROCKETS_PATH     = "custom_rockets.json"
+DEFAULT_ROCKETS_PATH = "../rockets/default_rockets.json"
+CUSTOM_ROCKETS_PATH = "../rockets/custom_rockets.json"
 TRAJECTORY_TARGETS_PATH = "scripts/trajectory_targets.json"

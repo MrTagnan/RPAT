@@ -5,7 +5,7 @@
 #### Added:
 
 * Support for basic SRBs
-* Many additional default rockets with SRBs
+* An additional default rocket family with SRBs
 * ANSI colour support in the terminal, to make it more readable
 
 
