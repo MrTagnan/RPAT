@@ -244,8 +244,8 @@ def select_default():
         dry_mass, wet_mass = isolate_stage_masses(dry_mass, wet_mass)
         if DEBUG_MODE:
             print("Manual stage addition is enabled, adjusting dry and wet masses accordingly.\n")
-            print(f"Previous dry masses: {rocket_data['dryMass']} kg")
-            print(f"Previous wet masses: {rocket_data['wetMass']} kg\n")
+            print(f"Previous dry masses: {rocket_data.get('dryMass', rocket_data.get('dry_mass', 0))} kg")
+            print(f"Previous wet masses: {rocket_data.get('wetMass', rocket_data.get('wet_mass', 0))} kg\n")
             print(f"Adjusted dry masses: {dry_mass} kg")
             print(f"Adjusted wet masses: {wet_mass} kg\n")
 
