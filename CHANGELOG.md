@@ -38,8 +38,8 @@
 * Fuel reserve system added to the \_rocket.json files.
 * Automatic conversion of the reserve fuel to penalty mass in user\_inputs.py.
 * RPAT now uses the mass adjusted for reserves to calculate payload capacity.
-* Added a new curve to the graph for recoverable rockets, showing delta V penalty of recovery. This is detected automatically based upon the fuel reserves* Dark mode! It can be toggled at the top of RPAT.py via DARK\_MODE =
-
+* Added a new curve to the graph for recoverable rockets, showing delta V penalty of recovery. This is detected automatically based upon the fuel reserve
+*Dark mode!
 
 
 #### Changed:
@@ -50,13 +50,7 @@
 
 #### Notes:
 
-Although fuel\_reserves has been added as a variable to a default rocket (falcon 9), it does not need to be added for RPAT to work,
-
-if you do not include this variable, it is generated as an empty array and will not impact the calculations or graphs. Overall,
-
-this feature was designed to make RPAT compatible with propulsively recovered rockets, and to support fuel residuals. It is not
-
-completely without fault, but it is a good estimation if you can find the data on the rocket.
+Although fuel_reserves has been added as a variable to a default rocket (falcon 9), it does not need to be added for RPAT to work, if you do not include this variable, it is generated as an empty array and will not impact the calculations or graphs. Overall, this feature was designed to make RPAT compatible with propulsively recovered rockets, and to support fuel residuals. It is not completely without fault, but it is a good estimation if you can find the data on the rocket.
 
 
 ## V0.75 - Movement
