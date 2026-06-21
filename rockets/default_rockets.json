@@ -11,6 +11,7 @@
     "fuel_reserve" : [38700, 0]
   },
   
+
   "f9expended": {
     "family"       : "Falcon 9 (SpaceX)",
     "variant"      : "Expended",  
@@ -24,17 +25,22 @@
     "fuel_reserve" : [0, 0]
   },
 
+
+
   "electron": {
+    "family"       : "Electron (Rocket Lab)",
     "man_stage_add": 1,
     "stages"       : 2,
     "dry_mass"     : [3250, 250],
     "wet_mass"     : [12550, 2300],
     "isp"          : [311, 333],
-    "type"         : "Active",
-    "desc"         : "Electron (Rocket Lab)"
+    "type"         : "Active"
   },
   
+
+
  "saturnv": {
+    "family"       : "Saturn V (NASA, Various)",
     "man_stage_add": 0,
     "stages"       : 3,
     "dry_mass"     : [137000, 43000, 15200],
@@ -44,25 +50,32 @@
     "desc"         : "Saturn V (NASA, various)"
   },
 
+
+
   "titan2": {
+    "family"       : "Titan II (USAF, Martin) (ICBM)",
     "man_stage_add": 0,
     "stages"       : 2,
     "dry_mass"     : [4319, 2301],
     "wet_mass"     : [121200, 28400],
     "isp"          : [273, 316],
-    "type"         : "Historical",
-    "desc"         : "Titan II (ICBM)"
+    "type"         : "Historical"
   },
 
+
+
   "n1-1969": {
+    "family"       : "N1 (CCCP, OKB-1)",
+    "variant"      : "1969 Version",
     "man_stage_add": 0,
     "stages"       : 5,
     "dry_mass"     : [130000, 55700, 13700, 6000, 3500],
     "wet_mass"     : [1880000, 560700, 188700, 61800, 18200],
     "isp"          : [284, 346, 353, 353, 349],
-    "type"         : "Historical",
-    "desc"         : "N1 (1969 version) (CCCP, OKB-1)"
+    "type"         : "Historical"
   },
+
+
 
   "delta-4m": {
     "type"              : "Historical",
@@ -72,9 +85,10 @@
     "stages"            : 2,
     "dry_mass"          : [26760, 2850],
     "wet_mass"          : [226400, 24170],
-    "isp"               : [365, 462],
-    "main_stage_thrust" : 3140
+    "isp"               : [370, 462],
+    "main_stage_thrust" : 3033.3
   },
+
 
   "delta-4m-star48b": {
     "type"              : "Hypothetical",
@@ -84,9 +98,10 @@
     "stages"            : 3,
     "dry_mass"          : [26760, 2850, 126],
     "wet_mass"          : [226400, 24170, 2137],
-    "isp"               : [365, 462, 286],
-    "main_stage_thrust" : 3140
+    "isp"               : [370, 462, 286],
+    "main_stage_thrust" : 3033.3
   },
+
 
     "delta-4m-42": {
       "type"              : "Historical",
@@ -96,8 +111,8 @@
       "stages"            : 2,
       "dry_mass"          : [26760, 2850],
       "wet_mass"          : [226400, 24170],
-      "isp"               : [365, 462],
-      "main_stage_thrust" : 3140,
+      "isp"               : [375, 462],
+      "main_stage_thrust" : 3033.3,
       "boosters"            :{
         "thrust"      : 1248.9,
         "dry_mass"    : 3485,
@@ -108,6 +123,7 @@
     }
   },
 
+
     "delta-4m-52": {
       "type"              : "Historical",
       "family"            : "Delta IV (ULA)",
@@ -116,8 +132,8 @@
       "stages"            : 2,
       "dry_mass"          : [26760, 3490],
       "wet_mass"          : [226400, 30710],
-      "isp"               : [365, 462],
-      "main_stage_thrust" : 3140,
+      "isp"               : [375, 462],
+      "main_stage_thrust" : 3033.3,
       "boosters"            :{
         "thrust"      : 1248.9,
         "dry_mass"    : 3485,
@@ -127,6 +143,7 @@
         "burn_time"   : 90.8
     }
   },
+
       
     "delta-4m-54": {
       "type"              : "Historical",
@@ -136,8 +153,8 @@
       "stages"            : 2,
       "dry_mass"          : [26760, 3490],
       "wet_mass"          : [226400, 30710],
-      "isp"               : [365, 462],
-      "main_stage_thrust" : 3140,
+      "isp"               : [380, 462],
+      "main_stage_thrust" : 3033.3,
       "boosters"            :{
         "thrust"      : 1248.9,
         "dry_mass"    : 3485,
@@ -147,6 +164,28 @@
         "burn_time"   : 90.8
     }
   },
+
+
+    "delta-4h": {
+      "type"              : "Historical",
+      "family"            : "Delta IV (ULA)",
+      "variant"           : "Heavy",
+      "man_stage_add"     : 0,
+      "stages"            : 2,
+      "dry_mass"          : [26760, 3490],
+      "wet_mass"          : [226400, 30710],
+      "isp"               : [380, 462],
+      "main_stage_thrust" : 2235.92,
+      "boosters"            :{
+        "thrust"      : 3033.39,
+        "dry_mass"    : 26760,
+        "wet_mass"    : 226400,
+        "isp"         : 380,
+        "count"       : 2,
+        "burn_time"   : 246
+    }
+  },
+
 
 
   "atlas-v-stick": {
@@ -160,6 +199,7 @@
     "isp"                 : [315, 450.5],
     "main_stage_thrust"   : 3827
   },
+
 
   "atlas-v-2x-aj60a": {
     "type"                : "Active",
@@ -180,6 +220,7 @@
       "burn_time"   : 94
     }     
   },
+
 
   "atlas-v-4x-aj60a": {
     "type"                : "Active",
