@@ -85,7 +85,8 @@ Simple ratio of payload mass to total launch mass. Gives a general idea of wheth
 
 ## Example Output
 
-WIP 
+<img width="656" height="967" alt="image" src="https://github.com/user-attachments/assets/223b2a8a-81ea-44ac-8d1d-d679bb0684ec" />
+
 
 ---
 
