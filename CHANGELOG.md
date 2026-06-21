@@ -26,6 +26,7 @@
 #### Added:
 
 * Stage by stage breakdown for dV, so you know when staging actually occurs and which stages provide how much energy.
+* Added config.py, adding a way for users to customise RPAT a little bit, including modifting step rates for calculations, toggling the new dark mode, enabling debug mode or even disabling the graph. This may eventually just get ported to a more industrially standard .cfg file, but it will do for now!
 
 #### Changed:
 * Completely changed the architecture of the application, it is now more organised into a proper structure
