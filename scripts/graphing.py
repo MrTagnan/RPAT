@@ -27,8 +27,8 @@ def graph(rocket, leo_payload):
     )
 
     # Checking if it is worth plotting the expended graph.
-    total_reserve = sum(np.array(rocket.wet_mass) - np.array(rocket.wet_mass_adj))
-    reserve_fraction = total_reserve / sum(rocket.wet_mass)
+    total_reserve = sum(np.array(rocket.dry_mass_adj) - np.array(rocket.dry_mass))
+    reserve_fraction = total_reserve / sum(rocket.dry_mass)
     plot_raw_curve = reserve_fraction > 0.02  # 2% threshold.
 
     if DEBUG_MODE:
