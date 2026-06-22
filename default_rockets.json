@@ -1,0 +1,256 @@
+{
+  "f9": {
+    "family"       : "Falcon 9 (SpaceX)",
+    "variant"      : "Droneship Landing",
+    "man_stage_add": 0,
+    "stages"       : 2,
+    "dry_mass"     : [22000, 4000],
+    "wet_mass"     : [409000, 111500],
+    "isp"          : [311, 348],
+    "type"         : "Active",
+    "fuel_reserve" : [38700, 0]
+  },
+  
+
+  "f9expended": {
+    "family"       : "Falcon 9 (SpaceX)",
+    "variant"      : "Expended",  
+    "man_stage_add": 0,
+    "stages"       : 2,
+    "dry_mass"     : [22000, 4000],
+    "wet_mass"     : [409000, 111500],
+    "isp"          : [311, 348],
+    "type"         : "Active",
+    "desc"         : "Falcon 9 Block 5 (Fully Expended) (SpaceX)",
+    "fuel_reserve" : [0, 0]
+  },
+
+
+
+  "electron": {
+    "family"       : "Electron (Rocket Lab)",
+    "man_stage_add": 1,
+    "stages"       : 2,
+    "dry_mass"     : [3250, 250],
+    "wet_mass"     : [12550, 2300],
+    "isp"          : [311, 333],
+    "type"         : "Active"
+  },
+  
+
+
+ "saturnv": {
+    "family"       : "Saturn V (NASA, Various)",
+    "man_stage_add": 0,
+    "stages"       : 3,
+    "dry_mass"     : [137000, 43000, 15200],
+    "wet_mass"     : [2214000, 470000, 120500],
+    "isp"          : [304, 424, 424],
+    "type"         : "Historical",
+    "desc"         : "Saturn V (NASA, various)"
+  },
+
+
+
+  "titan2": {
+    "family"       : "Titan II (USAF, Martin) (ICBM)",
+    "man_stage_add": 0,
+    "stages"       : 2,
+    "dry_mass"     : [4319, 2301],
+    "wet_mass"     : [121200, 28400],
+    "isp"          : [273, 316],
+    "type"         : "Historical"
+  },
+
+
+
+  "n1-1969": {
+    "family"       : "N1 (CCCP, OKB-1)",
+    "variant"      : "1969 Version",
+    "man_stage_add": 0,
+    "stages"       : 5,
+    "dry_mass"     : [130000, 55700, 13700, 6000, 3500],
+    "wet_mass"     : [1880000, 560700, 188700, 61800, 18200],
+    "isp"          : [284, 346, 353, 353, 349],
+    "type"         : "Historical"
+  },
+
+
+
+  "delta-4m": {
+    "type"              : "Historical",
+    "family"            : "Delta IV (ULA)",
+    "variant"           : "Medium (single stick)",
+    "man_stage_add"     : 0,
+    "stages"            : 2,
+    "dry_mass"          : [26760, 2850],
+    "wet_mass"          : [226400, 24170],
+    "isp"               : [370, 462],
+    "main_stage_thrust" : 3033.3
+  },
+
+
+  "delta-4m-star48b": {
+    "type"              : "Hypothetical",
+    "family"            : "Delta IV (ULA)",
+    "variant"           : "Medium (single stick) + Star 48B",
+    "man_stage_add"     : 0,
+    "stages"            : 3,
+    "dry_mass"          : [26760, 2850, 126],
+    "wet_mass"          : [226400, 24170, 2137],
+    "isp"               : [370, 462, 286],
+    "main_stage_thrust" : 3033.3
+  },
+
+    "delta-4s-star48b": {
+    "type"              : "Hypothetical",
+    "family"            : "Delta IV (ULA)",
+    "variant"           : "Medium (single stick) + Delta K + Star 48B",
+    "man_stage_add"     : 0,
+    "stages"            : 3,
+    "dry_mass"          : [26760, 950, 126],
+    "wet_mass"          : [226400, 6954, 2141],
+    "isp"               : [370, 319, 292],
+    "main_stage_thrust" : 3033.3
+  },
+
+
+    "delta-4m-42": {
+      "type"              : "Historical",
+      "family"            : "Delta IV (ULA)",
+      "variant"           : "Medium+ (4,2) (2x GEM 60)",
+      "man_stage_add"     : 0,
+      "stages"            : 2,
+      "dry_mass"          : [26760, 2850],
+      "wet_mass"          : [226400, 24170],
+      "isp"               : [375, 462],
+      "main_stage_thrust" : 3033.3,
+      "boosters"            :{
+        "thrust"      : 1248.9,
+        "dry_mass"    : 3485,
+        "wet_mass"    : 33183,
+        "isp"         : 274,
+        "count"       : 2,
+        "burn_time"   : 90.8
+    }
+  },
+
+
+    "delta-4m-52": {
+      "type"              : "Historical",
+      "family"            : "Delta IV (ULA)",
+      "variant"           : "Medium+ (5,2) (2x GEM 60)",
+      "man_stage_add"     : 0,
+      "stages"            : 2,
+      "dry_mass"          : [26760, 3490],
+      "wet_mass"          : [226400, 30710],
+      "isp"               : [375, 462],
+      "main_stage_thrust" : 3033.3,
+      "boosters"            :{
+        "thrust"      : 1248.9,
+        "dry_mass"    : 3485,
+        "wet_mass"    : 33183,
+        "isp"         : 274,
+        "count"       : 2,
+        "burn_time"   : 90.8
+    }
+  },
+
+      
+    "delta-4m-54": {
+      "type"              : "Historical",
+      "family"            : "Delta IV (ULA)",
+      "variant"           : "Medium+ (5,4) (4x GEM 60)",
+      "man_stage_add"     : 0,
+      "stages"            : 2,
+      "dry_mass"          : [26760, 3490],
+      "wet_mass"          : [226400, 30710],
+      "isp"               : [380, 462],
+      "main_stage_thrust" : 3033.3,
+      "boosters"            :{
+        "thrust"      : 1248.9,
+        "dry_mass"    : 3485,
+        "wet_mass"    : 33183,
+        "isp"         : 274,
+        "count"       : 4,
+        "burn_time"   : 90.8
+    }
+  },
+
+
+    "delta-4h": {
+      "type"              : "Historical",
+      "family"            : "Delta IV (ULA)",
+      "variant"           : "Heavy",
+      "man_stage_add"     : 0,
+      "stages"            : 2,
+      "dry_mass"          : [26760, 3490],
+      "wet_mass"          : [226400, 30710],
+      "isp"               : [380, 462],
+      "main_stage_thrust" : 2235.92,
+      "boosters"            :{
+        "thrust"      : 3033.39,
+        "dry_mass"    : 26760,
+        "wet_mass"    : 226400,
+        "isp"         : 380,
+        "count"       : 2,
+        "burn_time"   : 246
+    }
+  },
+
+
+
+  "atlas-v-stick": {
+    "type"                : "Active",
+    "family"              : "Atlas V (ULA)",
+    "variant"             : "401 (no SRBs)",
+    "man_stage_add"       : 0,
+    "stages"              : 2,
+    "dry_mass"             : [21054, 2316],
+    "wet_mass"             : [305143, 23146],
+    "isp"                 : [315, 450.5],
+    "main_stage_thrust"   : 3827
+  },
+
+
+  "atlas-v-2x-aj60a": {
+    "type"                : "Active",
+    "family"              : "Atlas V (ULA)",
+    "variant"             : "421 (2x AJ-60A)",
+    "man_stage_add"       : 0,
+    "stages"              : 2,
+    "dry_mass"             : [21054, 2316],
+    "wet_mass"             : [305143, 23146],
+    "isp"                 : [320, 450.5],
+    "main_stage_thrust"   : 3827,
+    "boosters"            :{
+      "thrust"      : 1688.4,
+      "dry_mass"    : 4067,
+      "wet_mass"    : 46697,
+      "isp"         : 279.3,
+      "count"       : 2,
+      "burn_time"   : 94
+    }     
+  },
+
+
+  "atlas-v-4x-aj60a": {
+    "type"                : "Active",
+    "family"              : "Atlas V (ULA)",
+    "variant"             : "541 (4x AJ-60A)",
+    "man_stage_add"       : 0,
+    "dry_mass"             : [21054, 2316],
+    "wet_mass"             : [305143, 23146],
+    "isp"                 : [320, 450.5],
+    "main_stage_thrust"   : 3827,
+    "boosters"            :{
+      "thrust"      : 1688.4,
+      "dry_mass"    : 4067,
+      "wet_mass"    : 46697,
+      "isp"         : 279.3,
+      "count"       : 4,
+      "burn_time"   : 94
+    }     
+  }
+
+}
