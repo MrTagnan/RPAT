@@ -24,6 +24,50 @@
     "desc"         : "Falcon 9 Block 5 (Fully Expended) (SpaceX)",
     "fuel_reserve" : [0, 0]
   },
+  
+    "f9shitfuck": {
+    "family"       : "Falcon 9 (SpaceX)",
+    "variant"      : "Expended + 2x RSRMVs",  
+    "man_stage_add": 0,
+    "stages"       : 2,
+    "dry_mass"     : [22000, 4000],
+    "wet_mass"     : [409000, 111500],
+    "isp"          : [311, 348],
+    "type"         : "Hypothetical",
+    "desc"         : "Falcon 9 Block 5 (Fully Expended) + 2x RSRMVs (SpaceX)",
+    "fuel_reserve" : [0, 0],
+    "main_stage_thrust" : 7605,
+      "boosters"            :{
+        "thrust"      : 16000,
+        "dry_mass"    : 91000,
+        "wet_mass"    : 730000,
+        "isp"         : 268,
+        "count"       : 2,
+        "burn_time"   : 126
+    }
+  },
+
+    "SpaceShuttle": {
+    "family"       : "Space Shuttle (NASA, Various)",
+    "variant"      : "Main",  
+    "man_stage_add": 0,
+    "stages"       : 2,
+    "dry_mass"     : [29930, 99318],
+    "wet_mass"     : [750975, 110000],
+    "isp"          : [455, 319],
+    "type"         : "Historical",
+    "desc"         : "Space Shuttle (NASA)",
+    "fuel_reserve" : [0, 1603],
+    "main_stage_thrust" : 6837,
+      "boosters"            :{
+        "thrust"      : 11519,
+        "dry_mass"    : 86183,
+        "wet_mass"    : 589670,
+        "isp"         : 269,
+        "count"       : 2,
+        "burn_time"   : 124
+    }
+  },
 
 
 
@@ -93,22 +137,22 @@
   "delta-4m-star48b": {
     "type"              : "Hypothetical",
     "family"            : "Delta IV (ULA)",
-    "variant"           : "Medium (single stick) + Star 48B",
+    "variant"           : "Medium (single stick) + Star 48BL",
     "man_stage_add"     : 0,
     "stages"            : 3,
-    "dry_mass"          : [26760, 2850, 126],
-    "wet_mass"          : [226400, 24170, 2137],
-    "isp"               : [370, 462, 286],
+    "dry_mass"          : [26760, 2850, 131],
+    "wet_mass"          : [226400, 24170, 2141],
+    "isp"               : [370, 462, 292],
     "main_stage_thrust" : 3033.3
   },
 
     "delta-4s-star48b": {
     "type"              : "Hypothetical",
     "family"            : "Delta IV (ULA)",
-    "variant"           : "Medium (single stick) + Delta K + Star 48B",
+    "variant"           : "Medium (single stick) + Delta K + Star 48BL",
     "man_stage_add"     : 0,
     "stages"            : 3,
-    "dry_mass"          : [26760, 950, 126],
+    "dry_mass"          : [26760, 950, 131],
     "wet_mass"          : [226400, 6954, 2141],
     "isp"               : [370, 319, 292],
     "main_stage_thrust" : 3033.3
@@ -187,6 +231,27 @@
       "dry_mass"          : [26760, 3490],
       "wet_mass"          : [226400, 30710],
       "isp"               : [380, 462],
+      "main_stage_thrust" : 2235.92,
+      "boosters"            :{
+        "thrust"      : 3033.39,
+        "dry_mass"    : 26760,
+        "wet_mass"    : 226400,
+        "isp"         : 380,
+        "count"       : 2,
+        "burn_time"   : 246
+    }
+  },
+
+  
+      "delta-4h-star48": {
+      "type"              : "Historical",
+      "family"            : "Delta IV (ULA)",
+      "variant"           : "Heavy + Star 48BL (Parker config)",
+      "man_stage_add"     : 0,
+      "stages"            : 2,
+      "dry_mass"          : [26760, 3490, 131],
+      "wet_mass"          : [226400, 30710, 2141],
+      "isp"               : [380, 462, 292],
       "main_stage_thrust" : 2235.92,
       "boosters"            :{
         "thrust"      : 3033.39,
